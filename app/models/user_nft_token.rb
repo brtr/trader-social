@@ -1,0 +1,2 @@
+class UserNftToken < ApplicationRecord
+end

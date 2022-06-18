@@ -1,0 +1,64 @@
+<%= form_tag add_watchlist_path, class: "mx-5 mb-5" do %>
+  <div class="row g-3 align-items-center">
+    <div class="col-7">
+      <%= text_field_tag :address, nil, class: "form-control inline-form", placeholder: "Add address..." %>
+    </div>
+    <div class="col-5">
+      <%= submit_tag "Submit", class: 'btn btn-primary mt-3 mt-sm-0' %>
+    </div>
+  </div>
+<% end %>
+
+<div class="mb-5 mx-5">
+  <% @trades.each do |trade| %>
+    <div class="col-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <span><%= address_format trade.user_address %></span>
+            <span>·</span>
+            <span><%= link_to trade.nft_slug, nft_path(trade.nft_slug) %></span>
+            <span>·</span>
+            <span><%= "#{time_ago_in_words trade.trade_time} ago" %></span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text"><%= card_text(trade) %></p>
+          <%= image_tag trade.image_url, width: "60%" if trade.image_url %>
+          <p class="mt-5"><%= link_to "Detail", trade.permalink, class: "card-link", target: "_blank" %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="p-4">
+  </div>
+</div>
+<div class="settings js-settings">
+  <div class="settings-toggle">
+    <div class="settings-toggle-option settings-toggle-option-text js-settings-toggle">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sliders align-middle"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+      Filters
+    </div>
+  </div>
+  <div class="settings-panel">
+    <div class="settings-content">
+      <!-- Search-->
+      <div class="settings-title d-flex align-items-center">
+        <button type="button" class="btn-close float-right js-settings-toggle" aria-label="Close"></button>
+        <h4 class="mb-0 ms-2 d-inline-block"><%= t("views.actions.filter") %></h4>
+      </div>
+      <div class="settings-body">
+        <%= search_form_for @q, url: user_trades_path, method: :get do |f| %>
+          <div class="mb-3 pb-1 col-12">
+            <%= f.label :user_watchlist_address, class: "form-label d-block px-0" %>
+            <%= f.text_field :user_watchlist_address_eq, class: "form-control inline-form" %>
+          </div>
+          <div class="mb-3 pb-1">
+            <%= f.submit "Submit", class: 'btn btn-primary mt-3 mt-sm-0' %>
+            <%= link_to "Reset", user_trades_path, class: 'btn btn-default' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
